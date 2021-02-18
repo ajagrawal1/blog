@@ -5,6 +5,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_email(params[:email])
     if user.password == params[:password]
+      UserMailer.with(user: user).welcome_email.deliver_later
       session[:user_id] = user.id
       redirect_to '/articles'
     else
